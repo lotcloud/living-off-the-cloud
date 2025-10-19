@@ -1,0 +1,28 @@
+---
+name: Sync Techniques
+on:
+  push:
+    branches: [main, master]
+    paths: ['techniques/**']  
+  workflow_dispatch:
+
+jobs:
+  sync-techniques:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to lotcloud.github.io repo
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          external_repository: lotcloud/lotcloud.github.io
+          publish_branch: main
+          publish_dir: techniques
+          destination_dir: _techniques
+          enable_jekyll: true
+          keep_files: false
+          commit_message: "Sync techniques from lotcloud/lotcloud"
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
